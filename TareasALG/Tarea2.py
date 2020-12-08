@@ -90,7 +90,7 @@ def dp_intermediate_damerau_backwards(a, b, thr = 2**31):
                               V3[fil - 1] + 1,
                               V2[fil - 1] + cost,
                               V1[fil - 2] + 1 if a[col - 1] == b[fil - 2] and b[fil - 1] == a[col - 3] else inf,
-                              V1[fil - 2] + 1 if a[col - 1] == b[fil - 3] and b[fil - 1] == a[col - 2] else inf,
+                              V1[fil - 2] + 1 if fil >= 2 and b[fil - 1] == a[col - 2] and a[col - 1] == b[fil - 3] else inf,
                               V1[fil - 2] + 1 if a[col - 1] == b[fil - 2] and b[fil - 1] == a[col - 2] else inf)
         V1, V2, V3 = V2, V3, V1
         if min(V2) > thr: return thr + 1
