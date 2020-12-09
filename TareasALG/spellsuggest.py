@@ -59,7 +59,7 @@ class SpellSuggester:
         results = {} # diccionario termino:distancia
         if threshold == None: threshold = 2**31
         for voc in self.vocabulary:
-            if abs(len(voc)-len(term)): d = thr + 1
+            if abs(len(voc)-len(term)) > threshold: d = threshold + 1
             elif distance == "levenshtein":
                 d = t2.dp_levenshtein_backwards(term,voc,threshold)
             elif distance == "restricted":
@@ -107,8 +107,6 @@ class TrieSpellSuggester(SpellSuggester):
     
 if __name__ == "__main__":
     spellsuggester = TrieSpellSuggester("./corpora/quijote.txt")
-    print(spellsuggester.suggest("casa", "intermediate",4))
-    print(len(spellsuggester.suggest("casa", "intermediate",4)))
+    print(spellsuggester.suggest("casa", "intermediate", threshold = 4))
+    print(len(spellsuggester.suggest("casa", "intermediate", threshold = 4)))
     # cuidado, la salida es enorme print(suggester.trie)
-
-    
