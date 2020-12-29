@@ -3,6 +3,8 @@ from nltk.stem.snowball import SnowballStemmer
 import os
 import re
 import math
+# ALGORITMICA
+from TareasALG.spellsuggest import TrieSpellSuggester
 
 
 class SAR_Project:
@@ -65,6 +67,8 @@ class SAR_Project:
         self.use_ranking = False  # valor por defecto, se cambia con self.set_ranking()
         self.doc_cont = 0
         self.new_cont = 0
+        # ALGORITMICA
+        self.use_approximate = False # valor por defecto, se cambia con self.set_approximate()
 
     ###############################
     ###                         ###
@@ -128,6 +132,22 @@ class SAR_Project:
         """
         self.use_ranking = v
 
+    # ALGORITMICA
+    def set_approximate(self, v):
+        """
+
+        Cambia el modo de approximate por defecto.
+        
+        input: "v" booleano.
+
+        UTIL PARA ALGORITMICA
+
+        si self.use_approximate es True, si una palabra no devuelve resultados, se buscará con una sugerencia
+
+        """
+        self.use_approximate = v
+
+
     ###############################
     ###                         ###
     ###   PARTE 1: INDEXACION   ###
@@ -147,6 +167,8 @@ class SAR_Project:
         self.positional = args['positional']
         self.stemming = args['stem']
         self.permuterm = args['permuterm']
+        # ALGORITMICA
+        self.approximate = args['approximate']
 
         # Variable secuencial que representa el id de un fichero
         for dir, _, files in os.walk(root):
@@ -161,6 +183,10 @@ class SAR_Project:
         # Si se activa la función de permuterm
         if self.permuterm:
             self.make_permuterm()
+        # ALGORITMICA 
+        # Si se activa la función approximate
+        if self.approximate():
+            self.spellsuggester = TrieSpellSuggester(os.path.join(dir, filename))
 
     def index_file(self, filename):
         """
@@ -585,7 +611,7 @@ class SAR_Project:
 
         return ret
 
-    def get_posting(self, term, field='article', wildcard='False'):
+    def get_posting(self, term, field='article', wildcard='False', first='True'):
         """
         NECESARIO PARA TODAS LAS VERSIONES
 
@@ -596,9 +622,10 @@ class SAR_Project:
 
 
         param:  "term": termino del que se debe recuperar la posting list.
-                "field": campo sobre el que se debe recuperar la posting list, solo necesario se se hace la ampliacion de multiples indices
+                "field": campo sobre el que se debe recuperar la posting list, solo necesario se se hace la ampliacion de multiples indices.
                 "wildcard": indica si es una consulta widlcard (no hay que realizar stemming si esta activada la opción)
-        return: posting list
+        return: posting list.
+                "active": parametro interno, para solo buscar una sugerencia.
 
         """
         res = []
@@ -614,7 +641,15 @@ class SAR_Project:
             if term in self.index[field]:
                 res = list(self.index[field][term].keys())
 
+        # ALGORITMICA
+        if approximate and res is [] and first:
+            suggestion = spellsuggester.suggest(term, threshold=2)
+            if suggestion is not []:
+                aux = dict(sorted(x.items(), key=lambda item: item[1]))
+                return self.or_posting(res, 
+                    get_posting(aux[len(aux) - 1], field, wildcard, False)
         return res
+
 
     def get_positionals(self, terms, field='article'):
         """
