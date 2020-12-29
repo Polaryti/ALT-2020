@@ -611,7 +611,7 @@ class SAR_Project:
 
         return ret
 
-    def get_posting(self, term, field='article', wildcard='False', first='True'):
+    def get_posting(self, term, field='article', wildcard='False'):
         """
         NECESARIO PARA TODAS LAS VERSIONES
 
@@ -625,7 +625,6 @@ class SAR_Project:
                 "field": campo sobre el que se debe recuperar la posting list, solo necesario se se hace la ampliacion de multiples indices.
                 "wildcard": indica si es una consulta widlcard (no hay que realizar stemming si esta activada la opción)
         return: posting list.
-                "active": parametro interno, para solo buscar una sugerencia.
 
         """
         res = []
@@ -642,11 +641,10 @@ class SAR_Project:
                 res = list(self.index[field][term].keys())
 
         # ALGORITMICA
-        if self.approximate and res is [] and first:
-            suggestion = self.spellsuggester.suggest(term, threshold=2)
-            if suggestion is not []:
-                aux = dict(sorted(suggestion.items(), key=lambda item: item[1]))
-                return self.or_posting(res, self.get_posting(aux[len(aux) - 1], field, wildcard, False))
+        if self.approximate and res is []:
+            suggestion = self.spellsuggester.suggest(term, threshold=3)
+            for sugg_term in suggestion.keys():
+                res = self.or_posting(res, self.get_posting(sugg_term, field, wildcard))
         
         return res
 
