@@ -642,12 +642,12 @@ class SAR_Project:
                 res = list(self.index[field][term].keys())
 
         # ALGORITMICA
-        if approximate and res is [] and first:
-            suggestion = spellsuggester.suggest(term, threshold=2)
+        if self.approximate and res is [] and first:
+            suggestion = self.spellsuggester.suggest(term, threshold=2)
             if suggestion is not []:
-                aux = dict(sorted(x.items(), key=lambda item: item[1]))
-                return self.or_posting(res, 
-                    get_posting(aux[len(aux) - 1], field, wildcard, False)
+                aux = dict(sorted(suggestion.items(), key=lambda item: item[1]))
+                return self.or_posting(res, self.get_posting(aux[len(aux) - 1], field, wildcard, False))
+        
         return res
 
 
