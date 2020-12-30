@@ -872,7 +872,6 @@ class SAR_Project:
         """
         # ALGORITMICA 
         # Si se activa la función approximate
-      
         if self.use_approximate:
             with open('tmp', 'w') as tmp_file:
               for field in self.index.items():

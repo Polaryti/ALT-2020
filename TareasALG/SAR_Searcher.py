@@ -53,6 +53,14 @@ if __name__ == "__main__":
     group1.add_argument('-T', '--test', dest='test', metavar= 'test', type=str, action='store',
                     help='file with queries and results, for testing.')
 
+    # group2 = parser.add_mutually_exclusive_group()
+    # group1.add_argument('-U', '--approximate', dest='approximate', metavar= 'approximate', type=str, action='store',
+    #                 help='approximate.')
+    # group1.add_argument('-D', '--distance', dest='distance', metavar= 'distance', type=str, action='store', default='levenshtein',
+    #                 help='distance to use. By default "levenshtein".')
+    # group1.add_argument('-H', '--threshold', dest='threshold', metavar= 'threshold', type=int, action='store', default=3,
+    #                 help='the threshold. By default 3.')
+
 
     args = parser.parse_args()
 
