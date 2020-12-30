@@ -40,11 +40,7 @@ if __name__ == "__main__":
     parser.add_argument('-R', '--rank', dest='rank', action='store_true', default=False, 
                     help='rank results. Does not apply with -C and -T options.')
 
-    # ALGORITMICA
-    parser.add_argument('-U', '--approximate', dest='approximate', action='store_true', default=False, 
-                    help='approximate search if query has misspelled words.')
-
-
+    
     group1 = parser.add_mutually_exclusive_group()
     group1.add_argument('-Q', '--query', dest='query', metavar= 'query', type=str, action='store',
                     help='query.')
@@ -53,14 +49,14 @@ if __name__ == "__main__":
     group1.add_argument('-T', '--test', dest='test', metavar= 'test', type=str, action='store',
                     help='file with queries and results, for testing.')
 
-    # group2 = parser.add_mutually_exclusive_group()
-    # group1.add_argument('-U', '--approximate', dest='approximate', metavar= 'approximate', type=str, action='store',
-    #                 help='approximate.')
-    # group1.add_argument('-D', '--distance', dest='distance', metavar= 'distance', type=str, action='store', default='levenshtein',
-    #                 help='distance to use. By default "levenshtein".')
-    # group1.add_argument('-H', '--threshold', dest='threshold', metavar= 'threshold', type=int, action='store', default=3,
-    #                 help='the threshold. By default 3.')
-
+    # ALGORITMICA
+    group2 = parser.add_argument_group()
+    group2.add_argument('-U', '--approximate', dest='approximate', action='store_true', default=False,
+                    help='approximate.')
+    group2.add_argument('-D', '--distance', dest='distance', type=str, action='store', default='levenshtein',
+                    help='distance to use. By default "levenshtein".')
+    group2.add_argument('-H', '--threshold', dest='threshold', type=int, action='store', default=3,
+                    help='the threshold. By default 3.')
 
     args = parser.parse_args()
 
@@ -71,7 +67,7 @@ if __name__ == "__main__":
     searcher.set_ranking(args.rank)
     searcher.set_showall(args.all)
     searcher.set_snippet(args.snippet)
-    searcher.set_approximate(args.approximate)
+    searcher.set_approximate(args.approximate, args.distance, args.threshold)
 
 
 
@@ -112,6 +108,7 @@ if __name__ == "__main__":
                     fnc(query)
                 else:
                     print(query)
+
     else:
         # modo interactivo
         query = input("query:")

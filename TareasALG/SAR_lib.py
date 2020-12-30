@@ -4,7 +4,7 @@ import os
 import re
 import math
 # ALGORITMICA
-from spellsuggest import SpellSuggester
+from spellsuggest import TrieSpellSuggester
 
 
 class SAR_Project:
@@ -133,7 +133,7 @@ class SAR_Project:
         self.use_ranking = v
 
     # ALGORITMICA
-    def set_approximate(self, v):
+    def set_approximate(self, v, dis, thr):
         """
 
         Cambia el modo de approximate por defecto.
@@ -146,6 +146,8 @@ class SAR_Project:
 
         """
         self.use_approximate = v
+        self.app_distance = dis
+        self.app_thr = thr
 
 
     ###############################
@@ -167,6 +169,7 @@ class SAR_Project:
         self.positional = args['positional']
         self.stemming = args['stem']
         self.permuterm = args['permuterm']
+        self.approximate = args['approximate']
 
         # Variable secuencial que representa el id de un fichero
         for dir, _, files in os.walk(root):
@@ -181,6 +184,15 @@ class SAR_Project:
         # Si se activa la función de permuterm
         if self.permuterm:
             self.make_permuterm()
+        # ALGORITMICA
+        # Si se activa la función approximate
+        if self.approximate:
+            with open('{}_voc'.format(args['index']), 'w') as tmp_file:
+              for field in self.index.items():
+                  for term in field[1].keys():
+                      tmp_file.write("{}\n".format(term))
+
+            self.spellsuggester = TrieSpellSuggester('{}_voc'.format(args['index']))
 
 
     def index_file(self, filename):
@@ -637,7 +649,7 @@ class SAR_Project:
 
         # ALGORITMICA
         if self.use_approximate and res == []:
-            suggestion = self.spellsuggester.suggest(term, distance="levenshtein", threshold=3)
+            suggestion = self.spellsuggester.suggest(term, self.app_distance, self.app_thr)
             for sugg_term in suggestion.keys():
                 res = self.or_posting(res, self.get_posting(sugg_term, field, wildcard))
         
@@ -870,16 +882,6 @@ class SAR_Project:
         return: el numero de noticias recuperadas, para la opcion -T
         
         """
-        # ALGORITMICA 
-        # Si se activa la función approximate
-        if self.use_approximate:
-            with open('tmp', 'w') as tmp_file:
-              for field in self.index.items():
-                  for term in field[1].keys():
-                      tmp_file.write("{}\n".format(term))
-
-            self.spellsuggester = SpellSuggester("tmp")
-
         result = self.solve_query(query)
         if self.use_ranking:
             result = self.rank_result(result, query)

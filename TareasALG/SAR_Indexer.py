@@ -26,7 +26,9 @@ if __name__ == "__main__":
 
     parser.add_argument('-O', '--positional', dest='positional', action='store_true', default=False, 
                     help='compute positional index.')
-                    
+
+    parser.add_argument('-U', '--approximate', dest='approximate', action='store_true', default=False, 
+                    help='compute approximate vocabulary.')                   
 
     args = parser.parse_args()
 
