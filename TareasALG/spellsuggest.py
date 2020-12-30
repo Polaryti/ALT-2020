@@ -22,7 +22,7 @@ class SpellSuggester:
 
         """
 
-        self.vocabulary  = self.build_vocab(vocab_file_path, tokenizer=re.compile("\W+"))
+        self.vocabulary  = self.build_vocab(vocab_file_path, tokenizer=re.compile(r"\W+"))
 
     def build_vocab(self, vocab_file_path, tokenizer):
         """Método para crear el vocabulario.
