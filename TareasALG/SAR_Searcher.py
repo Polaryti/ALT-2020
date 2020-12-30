@@ -53,6 +53,7 @@ if __name__ == "__main__":
     group1.add_argument('-T', '--test', dest='test', metavar= 'test', type=str, action='store',
                     help='file with queries and results, for testing.')
 
+
     args = parser.parse_args()
 
     with open(args.index, 'rb') as fh:

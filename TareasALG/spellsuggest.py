@@ -106,7 +106,7 @@ class TrieSpellSuggester(SpellSuggester):
         self.trie = Trie(self.vocabulary)
     
 if __name__ == "__main__":
-    spellsuggester = TrieSpellSuggester("./corpora/quijote.txt")
+    spellsuggester = TrieSpellSuggester("./corpora/")
     print(spellsuggester.suggest("casa", "intermediate", threshold = 4))
     print(len(spellsuggester.suggest("casa", "intermediate", threshold = 4)))
     # cuidado, la salida es enorme print(suggester.trie)
