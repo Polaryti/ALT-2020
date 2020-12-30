@@ -40,6 +40,10 @@ if __name__ == "__main__":
     parser.add_argument('-R', '--rank', dest='rank', action='store_true', default=False, 
                     help='rank results. Does not apply with -C and -T options.')
 
+    # ALGORITMICA
+    parser.add_argument('-U', '--approximate', dest='approximate', action='store_true', default=False, 
+                    help='approximate search if query has misspelled words.')
+
 
     group1 = parser.add_mutually_exclusive_group()
     group1.add_argument('-Q', '--query', dest='query', metavar= 'query', type=str, action='store',
@@ -58,6 +62,8 @@ if __name__ == "__main__":
     searcher.set_ranking(args.rank)
     searcher.set_showall(args.all)
     searcher.set_snippet(args.snippet)
+    searcher.set_approximate(args.approximate)
+
 
 
     # se debe contar o mostrar resultados?

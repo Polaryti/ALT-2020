@@ -185,7 +185,7 @@ class SAR_Project:
             self.make_permuterm()
         # ALGORITMICA 
         # Si se activa la función approximate
-        if self.approximate():
+        if self.approximate:
             self.spellsuggester = TrieSpellSuggester(os.path.join(dir, filename))
 
     def index_file(self, filename):

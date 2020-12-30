@@ -26,10 +26,7 @@ if __name__ == "__main__":
 
     parser.add_argument('-O', '--positional', dest='positional', action='store_true', default=False, 
                     help='compute positional index.')
-
-    # ALGORITMICA
-    parser.add_argument('-A', '--approximate', dest='approximate', action='store_true', default=False, 
-                    help='approximate search if query has misspelled words.')
+                    
 
     args = parser.parse_args()
 
