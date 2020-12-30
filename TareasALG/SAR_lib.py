@@ -4,7 +4,7 @@ import os
 import re
 import math
 # ALGORITMICA
-from TareasALG.spellsuggest import TrieSpellSuggester
+from spellsuggest import TrieSpellSuggester
 
 
 class SAR_Project:
