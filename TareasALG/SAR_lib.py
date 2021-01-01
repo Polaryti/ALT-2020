@@ -4,7 +4,7 @@ import os
 import re
 import math
 # ALGORITMICA
-from spellsuggest import TrieSpellSuggester
+from spellsuggest import SpellSuggester
 
 
 class SAR_Project:
@@ -192,7 +192,7 @@ class SAR_Project:
                   for term in field[1].keys():
                       tmp_file.write("{}\n".format(term))
 
-            self.spellsuggester = TrieSpellSuggester('{}_voc'.format(args['index']))
+            self.spellsuggester = SpellSuggester('{}_voc'.format(args['index']))
 
 
     def index_file(self, filename):
