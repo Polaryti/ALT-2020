@@ -3,7 +3,7 @@ import re
 
 import numpy as np
 import Tarea3 as t3
-from optimistBounds import optimist_distance
+from optimistBounds import hamming_distance
 
 class SpellSuggester:
 
@@ -59,7 +59,7 @@ class SpellSuggester:
         results = {} # diccionario termino:distancia
         if threshold == None: threshold = 2**31
         for voc in self.vocabulary:
-            if abs(len(voc)-len(term)) > threshold or optimist_distance(term, voc) > threshold:
+            if abs(len(voc)-len(term)) > threshold or hamming_distance(term, voc) > threshold:
                 d = threshold + 1
             elif distance == "levenshtein":
                 d = t3.dp_levenshtein_backwards(term, voc, threshold)
