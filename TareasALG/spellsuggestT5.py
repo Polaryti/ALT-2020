@@ -117,9 +117,9 @@ class TrieSpellSuggester(SpellSuggester):
         self.trie = Trie(self.vocabulary)
     
 if __name__ == "__main__":
-    palabras = ("casa", "constitución", "savaedra", "vícios", "quixot", "s3afg4ew")
-    tamaños = (1000, 2000, 3000, 4000, 5000, 10000, 15000, 20000, 25000, 30000)
-    thresholds = (1, 2, 3, 4, 5)
+    palabras = ("casa", "ancho", "jabón", "vícios")
+    tamaños = (5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000)
+    thresholds = (1, 2, 3, 5, 7)
     metodos = ("intermediate", "restricted", "levenshtein")
     for p in palabras:
         print(p)
@@ -137,3 +137,4 @@ if __name__ == "__main__":
                 spellsuggester.suggest(p, "levenshtein", threshold = y)
                 t = time.process_time() - tini
                 print('Trie: Sí   Tamaño: '+ str(x) + '   Threshold: ' + str(y) + '   Método: levenshtein   :   ' + str(t))
+
